@@ -29,21 +29,27 @@
             <input type="text" class="form-control" id="conta" placeholder="Informe sua conta">
         </div>
 
+        <div class="mb-3">
+            <label for="valor" class="form-label">Valor</label>
+            <input type="text" class="form-control" id="valor" placeholder="Informe um valor">
+        </div>
+
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">Confirmar conta</button>
+            <button type="submit" class="acessarConta btn btn-success mb-3">Acessar conta</button>
+            <button type="submit" class="criarConta btn btn-primary mb-3">Confirmar conta</button>
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         jQuery(document).ready(function(){
-
-            $('button[type=submit]').click(function(){
-
+            
+            $('.criarConta').click(function(){
+                const _this_ = $(this);
                 const cliente = $('#cliente').val();
                 const conta = $('#conta').val();
                 const agencia = $('#agencia').val();
-                const _this_ = $(this);
+                const valor = $('#valor').val();
 
                 _this_.attr('disabled', true).html('Carregando...')
                 var jqxhr = $.ajax({
@@ -61,6 +67,31 @@
                         _this_.attr('disabled', false).html('Confirma conta');
                     });
             });
+
+            $('.acessarConta').click(function(){
+                const _this_ = $(this);
+                const cliente = $('#cliente').val();
+                const conta = $('#conta').val();
+                const agencia = $('#agencia').val();
+                const valor = $('#valor').val();
+
+                _this_.attr('disabled', true).html('Carregando...')
+                var jqxhr = $.ajax({
+                        method: "POST",
+                        url: "./Conta.php",
+                        data: { cliente, conta, agencia, valor }
+                    })
+                    .done(function(request) {
+                        console.log(request);
+                    })
+                    .fail(function() {
+                        alert( "error" );
+                    })
+                    .always(function() {
+                        _this_.attr('disabled', false).html('Acessar conta');
+                    });
+            });
+
 
         });
     </script>

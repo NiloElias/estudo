@@ -35,6 +35,35 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        jQuery(document).ready(function(){
+
+            $('button[type=submit]').click(function(){
+
+                const cliente = $('#cliente').val();
+                const conta = $('#conta').val();
+                const agencia = $('#agencia').val();
+                const _this_ = $(this);
+
+                _this_.attr('disabled', true).html('Carregando...')
+                var jqxhr = $.ajax({
+                        method: "POST",
+                        url: "./Conta.php",
+                        data: { cliente, conta, agencia }
+                    })
+                    .done(function(request) {
+                        alert(request.msg);
+                    })
+                    .fail(function() {
+                        alert( "error" );
+                    })
+                    .always(function() {
+                        _this_.attr('disabled', false).html('Confirma conta');
+                    });
+            });
+
+        });
+    </script>
 
 </body>
 </html>
